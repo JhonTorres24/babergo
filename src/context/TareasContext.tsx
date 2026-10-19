@@ -1,8 +1,8 @@
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, useContext } from 'react';
+import type { ReactNode } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import type { Tarea } from '../types';
 
-// Datos de prueba (Demo) para que no empiece vacío
 const tareasIniciales: Tarea[] = [
   {
     id: '1',
@@ -20,7 +20,7 @@ const tareasIniciales: Tarea[] = [
     titulo: 'Leer el capítulo 4 de Cálculo',
     descripcion: 'Páginas 80 a 120',
     cursoId: 'curso-2',
-    fechaEntrega: new Date(Date.now() + 86400000).toISOString(), // Mañana
+    fechaEntrega: new Date(Date.now() + 86400000).toISOString(),
     prioridad: 'media',
     estado: 'en_progreso',
     subtareas: [{ id: 's1', titulo: 'Hacer resumen', completada: false }],
@@ -38,7 +38,6 @@ interface TareasContextType {
 const TareasContext = createContext<TareasContextType | undefined>(undefined);
 
 export function TareasProvider({ children }: { children: ReactNode }) {
-  // Usamos nuestro hook de LocalStorage con la clave 'babergo_tareas'
   const [tareas, setTareas] = useLocalStorage<Tarea[]>('babergo_tareas', tareasIniciales);
 
   const agregarTarea = (nuevaTarea: Tarea) => {
@@ -60,7 +59,6 @@ export function TareasProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Hook personalizado para usar el contexto fácilmente
 export function useTareas() {
   const context = useContext(TareasContext);
   if (!context) {

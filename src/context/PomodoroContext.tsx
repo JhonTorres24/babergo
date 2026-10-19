@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
+import type { ReactNode } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 interface PomodoroContextType {
@@ -17,14 +18,13 @@ interface PomodoroContextType {
 const PomodoroContext = createContext<PomodoroContextType | undefined>(undefined);
 
 export function PomodoroProvider({ children }: { children: ReactNode }) {
-  // Guardamos los minutos configurados en LocalStorage (por defecto 25 y 5)
   const [config, setConfig] = useLocalStorage('babergo_pomodoro_config', { estudio: 25, descanso: 5 });
-  
   const [modo, setModo] = useState<'estudio' | 'descanso'>('estudio');
   const [tiempoRestante, setTiempoRestante] = useState(config.estudio * 60);
   const [estaCorriendo, setEstaCorriendo] = useState(false);
   
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  // Corrección para producción: usar ReturnType en lugar de NodeJS.Timeout
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     if (estaCorriendo && tiempoRestante > 0) {
@@ -63,7 +63,6 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
 
   const guardarConfiguracion = (estudio: number, descanso: number) => {
     setConfig({ estudio, descanso });
-    // Si no está corriendo, actualizamos el reloj con los nuevos tiempos
     if (!estaCorriendo) {
       setTiempoRestante(modo === 'estudio' ? estudio * 60 : descanso * 60);
     }

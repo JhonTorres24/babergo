@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Play, Pause, RotateCcw, BookOpen, Settings, X } from 'lucide-react';
+import { Play, Pause, RotateCcw, Settings, X } from 'lucide-react';
 import { usePomodoro } from '../context/PomodoroContext';
 
 export default function Concentracion() {
@@ -8,17 +8,14 @@ export default function Concentracion() {
     iniciar, pausar, reiniciar, cambiarModo, guardarConfiguracion 
   } = usePomodoro();
 
-  // Estados para el Modal de Ajustes
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   const [nuevoEstudio, setNuevoEstudio] = useState(minEstudio.toString());
   const [nuevoDescanso, setNuevoDescanso] = useState(minDescanso.toString());
 
-  // Formatear tiempo
   const minutos = Math.floor(tiempoRestante / 60);
   const segundos = tiempoRestante % 60;
   const tiempoFormateado = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
 
-  // Calcular progreso
   const tiempoTotal = (modo === 'estudio' ? minEstudio : minDescanso) * 60;
   const progreso = ((tiempoTotal - tiempoRestante) / tiempoTotal) * 100;
 
@@ -43,7 +40,6 @@ export default function Concentracion() {
         <p className="text-gray-500 dark:text-gray-400">Técnica Pomodoro personalizable.</p>
       </div>
 
-      {/* Selector de Modo */}
       <div className="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-lg transition-colors">
         <button 
           onClick={() => cambiarModo('estudio')}
@@ -59,7 +55,6 @@ export default function Concentracion() {
         </button>
       </div>
 
-      {/* Reloj Central */}
       <div className="relative flex items-center justify-center w-72 h-72 rounded-full bg-white dark:bg-gray-800 shadow-xl border-4 border-gray-50 dark:border-gray-700 transition-colors">
         <svg className="absolute inset-0 w-full h-full transform -rotate-90">
           <circle cx="144" cy="144" r="136" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-gray-100 dark:text-gray-700" />
@@ -81,7 +76,6 @@ export default function Concentracion() {
         </div>
       </div>
 
-      {/* Controles */}
       <div className="flex items-center gap-4 pt-4">
         <button 
           onClick={reiniciar}
@@ -111,7 +105,6 @@ export default function Concentracion() {
         </button>
       </div>
 
-      {/* MODAL DE CONFIGURACIÓN CON MODO OSCURO */}
       {isConfigOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsConfigOpen(false)}></div>
@@ -152,7 +145,6 @@ export default function Concentracion() {
           </div>
         </div>
       )}
-
     </div>
   );
 }

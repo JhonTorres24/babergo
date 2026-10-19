@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 type Tema = 'claro' | 'oscuro';
@@ -13,7 +14,6 @@ const TemaContext = createContext<TemaContextType | undefined>(undefined);
 export function TemaProvider({ children }: { children: ReactNode }) {
   const [tema, setTema] = useLocalStorage<Tema>('babergo_tema', 'claro');
 
-  // Este efecto aplica la clase 'dark' al HTML de la página
   useEffect(() => {
     const root = window.document.documentElement;
     if (tema === 'oscuro') {
